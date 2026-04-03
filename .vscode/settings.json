@@ -1,0 +1,7 @@
+{
+  "github.copilot.chat.commitMessageGeneration.instructions": [
+    {
+      "text": "Write commit messages in English only. Format: <type>: <description>. Types: feat, fix, refactor, test, chore, docs, style, perf. No scope in parentheses. Example: feat: add JWT auth. Subject line only, no body."
+    }
+  ]
+}
