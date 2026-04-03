@@ -14,23 +14,38 @@ npm run build            # Compile TypeScript to dist/
 npm run start:prod       # Run compiled output
 npm run lint             # ESLint with auto-fix
 npm run format           # Prettier format src/ and test/
-npm run test             # Unit tests (jest, matches *.spec.ts in src/)
+npm run test             # Unit tests (test/unit/)
 npm run test:watch       # Unit tests in watch mode
-npm run test:e2e         # E2E tests (jest config: test/jest-e2e.json)
+npm run test:e2e         # E2E tests (test/e2e/, jest config: test/jest-e2e.json)
 npm run test:cov         # Unit tests with coverage report
 ```
 
 To run a single test file:
 ```bash
-npx jest src/path/to/file.spec.ts
+npx jest test/unit/path/to/file.spec.ts
 ```
+
+## Test structure
+
+All tests live in `test/`, separate from `src/`. The folder structure mirrors `src/`:
+
+```
+test/
+  unit/               # Unit tests — mirrors src/ structure
+    app.controller.spec.ts
+  e2e/                # End-to-end tests
+    app.e2e-spec.ts
+  jest-e2e.json       # Jest config for e2e tests
+```
+
+**Do not place test files inside `src/`.** When adding a unit test for `src/foo/bar.service.ts`, create it at `test/unit/foo/bar.service.spec.ts`. Import source files using relative paths like `../../src/foo/bar.service`.
 
 ## Architecture
 
 - **Framework**: NestJS 11 with Express platform
 - **Language**: TypeScript 5.7, targeting ES2023, `nodenext` module resolution
 - **Entry point**: `src/main.ts` — bootstraps `AppModule`, listens on `PORT` env var or 3000
-- **Module structure**: NestJS standard — modules in `src/`, each feature area should have its own `*.module.ts`, `*.controller.ts`, `*.service.ts`, and `*.spec.ts`
+- **Module structure**: NestJS standard — modules in `src/`, each feature area should have its own `*.module.ts`, `*.controller.ts`, `*.service.ts`
 - **Build output**: `dist/` (cleaned on each build via `deleteOutDir: true`)
 
 ## TypeScript notes
