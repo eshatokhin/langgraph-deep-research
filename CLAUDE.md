@@ -6,6 +6,16 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 NestJS TypeScript application scaffolded to implement a LangGraph-based deep research agent. Currently in early development — the core LangGraph agent logic has not yet been added.
 
+## Generating modules, services, controllers
+
+Use `npm run gen` instead of `nest generate` — it runs `nest generate` and automatically moves generated spec files from `src/` to `test/unit/` with corrected import paths:
+
+```bash
+npm run gen -- module research
+npm run gen -- service research
+npm run gen -- controller research
+```
+
 ## Commands
 
 ```bash
@@ -39,6 +49,25 @@ test/
 ```
 
 **Do not place test files inside `src/`.** When adding a unit test for `src/foo/bar.service.ts`, create it at `test/unit/foo/bar.service.spec.ts`. Import source files using relative paths like `../../src/foo/bar.service`.
+
+## LangChain/LangGraph documentation
+
+An MCP server with the official LangChain docs is connected: `docs-langchain` (tools: `search_docs_by_lang_chain`, `get_page_docs_by_lang_chain`).
+
+**Always consult it before:**
+- Writing any LangGraph code (graph, state, nodes, edges, checkpointing, streaming)
+- Using any `@langchain/*` API — imports, class names, method signatures
+- Answering questions about LangChain/LangGraph concepts
+
+Do not rely on training knowledge alone for LangGraph — the API changes frequently.
+
+## LangGraph API version
+
+This project uses **LangGraph v1 (JS/TS)** — always use the current API:
+
+- State: Zod schema (`z.object(...)`) passed to `StateGraph`, or `StateSchema` with `MessagesValue`
+- Custom reducers: `ReducedValue` from `@langchain/langgraph`
+- **Do not use `Annotation`** — it is deprecated in LangGraph v1
 
 ## Architecture
 
