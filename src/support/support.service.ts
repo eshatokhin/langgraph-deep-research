@@ -5,7 +5,7 @@ import { GraphService } from '../graph/graph.service';
 export class SupportService {
   constructor(private readonly graphService: GraphService) {}
 
-  async handleMessage(userMessage: string) {
-    return this.graphService.invoke(userMessage);
+  async handleMessage(userMessage: string, threadId: string) {
+    return this.graphService.invoke(userMessage, threadId);
   }
 }

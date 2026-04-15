@@ -1,17 +1,25 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { ChatGroq } from '@langchain/groq';
-import { SystemMessage } from '@langchain/core/messages';
+import { SystemMessage, ToolMessage } from '@langchain/core/messages';
 import { checkCustomerTool } from '../tools/customer.tool';
 import { buildSystemPrompt } from './prompts';
 import { SupportStateType, SupportStateUpdate } from '../graph/graph.state';
 
-const SYSTEM_PROMPT =
-  buildSystemPrompt(`You are a support assistant for an enterprise accounting system.
-Your task is to obtain the customer's EDRPOU code and verify it using the check_customer tool.
-EDRPOU is an 8-digit company identification code.
-If the customer has not provided it yet - ask for it.
-If the customer has provided it - call the check_customer tool immediately.`);
+const SYSTEM_PROMPT = buildSystemPrompt(
+  `You are a support assistant for an enterprise accounting system.
+  Your task is to obtain the customer's EDRPOU code and verify it using the check_customer tool.
+  EDRPOU is an 8-digit company identification code.
+  If the customer has not provided it yet - ask for it.
+  If the customer has provided it - call the check_customer tool immediately.`,
+);
+
+interface CustomerResult {
+  found: boolean;
+  edrpou?: string;
+  name?: string;
+  hasActiveSupport?: boolean;
+}
 
 @Injectable()
 export class VerifyAgent {
@@ -25,47 +33,22 @@ export class VerifyAgent {
   }
 
   async run(state: SupportStateType): Promise<SupportStateUpdate> {
+    const lastMessage = state.messages.at(-1);
+    const isAfterToolCall = lastMessage instanceof ToolMessage;
+
     const response = await this.model.invoke([
       new SystemMessage(SYSTEM_PROMPT),
       ...state.messages,
     ]);
 
-    if (!response.tool_calls?.length) {
+    if (!isAfterToolCall) {
       return { messages: [response] };
     }
 
-    const toolCall = response.tool_calls[0];
-    const toolMessage = await checkCustomerTool.invoke(toolCall);
-
-    interface CustomerResult {
-      found: boolean;
-      edrpou?: string;
-      name?: string;
-      hasActiveSupport?: boolean;
-    }
-
-    const data = JSON.parse(toolMessage.content as string) as CustomerResult;
-
-    if (!data.found) {
-      const notFoundMessage = await this.model.invoke([
-        new SystemMessage(SYSTEM_PROMPT),
-        ...state.messages,
-        response,
-        toolMessage,
-      ]);
-
-      return { messages: [response, toolMessage, notFoundMessage] };
-    }
-
-    const finalResponse = await this.model.invoke([
-      new SystemMessage(SYSTEM_PROMPT),
-      ...state.messages,
-      response,
-      toolMessage,
-    ]);
+    const data = JSON.parse(lastMessage.content as string) as CustomerResult;
 
     return {
-      messages: [response, toolMessage, finalResponse],
+      messages: [response],
       edrpou: data.edrpou ?? null,
       hasActiveSupport: data.hasActiveSupport ?? null,
     };

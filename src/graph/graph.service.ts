@@ -13,11 +13,13 @@ export class GraphService implements OnModuleInit {
     this.graph = this.graphBuilder.build();
   }
 
-  async invoke(userMessage: string): Promise<SupportStateType> {
-    const result = await this.graph.invoke({
-      messages: [new HumanMessage(userMessage)],
-    });
-
-    return result;
+  async invoke(
+    userMessage: string,
+    threadId: string,
+  ): Promise<SupportStateType> {
+    return this.graph.invoke(
+      { messages: [new HumanMessage(userMessage)] },
+      { configurable: { thread_id: threadId } },
+    );
   }
 }

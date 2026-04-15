@@ -11,7 +11,21 @@
       "Bash(python3 -c \"import sys,json; vs=[v for v in json.load\\(sys.stdin\\) if v.startswith\\('30'\\)]; print\\(vs[-5:] if vs else 'no v30'\\)\")",
       "Bash(npm install:*)",
       "Bash(rm -rf /mnt/c/dev/langgraph-deep-research/src/research /mnt/c/dev/langgraph-deep-research/src/agents/orchestrator /mnt/c/dev/langgraph-deep-research/src/agents/researcher /mnt/c/dev/langgraph-deep-research/src/agents/analyst /mnt/c/dev/langgraph-deep-research/src/agents/writer)",
-      "Bash(find /mnt/c/dev/langgraph-deep-research/test -name \"*.spec.ts\" -delete)"
+      "Bash(find /mnt/c/dev/langgraph-deep-research/test -name \"*.spec.ts\" -delete)",
+      "Bash(curl -s -X POST http://localhost:3000/support/message -H 'Content-Type: application/json' -d '{\"message\": \"Привіт\", \"threadId\": \"test-1\"}')",
+      "Bash(node dist/main.js)",
+      "Read(//usr/local/bin/**)",
+      "Read(//home/eugene/.nvm/versions/**)",
+      "Bash(curl -s -X POST http://localhost:3000/support/message -H 'Content-Type: application/json' -d '{\"message\": \"Привіт\", \"threadId\": \"test-auto-1\"}')",
+      "Bash(curl -s -X POST http://localhost:3000/support/message -H 'Content-Type: application/json' -d '{\"message\": \"Мій ЄДРПОУ 12345678\", \"threadId\": \"test-auto-1\"}')",
+      "Bash(curl -s -X POST http://localhost:3000/support/message -H 'Content-Type: application/json' -d '{\"message\": \"Моя компанія 87654321\", \"threadId\": \"test-auto-2\"}')",
+      "Bash(curl -s -X POST http://localhost:3000/support/message -H 'Content-Type: application/json' -d '{\"message\": \"Привіт\"}')",
+      "Bash(curl --version)",
+      "Bash(curl -v --max-time 5 http://localhost:3000/)",
+      "Bash(curl -s -X POST http://172.18.176.1:3000/support/message -H 'Content-Type: application/json' -d '{\"message\": \"Привіт\", \"threadId\": \"test-auto-1\"}')",
+      "Bash(curl -s -X POST http://172.18.176.1:3000/support/message -H 'Content-Type: application/json' -d '{\"message\": \"Мій ЄДРПОУ 12345678\", \"threadId\": \"test-auto-1\"}')",
+      "Bash(curl -s -X POST http://172.18.176.1:3000/support/message -H 'Content-Type: application/json' -d '{\"message\": \"Моя компанія 87654321\", \"threadId\": \"test-auto-2\"}')",
+      "Bash(curl -s -X POST http://172.18.176.1:3000/support/message -H 'Content-Type: application/json' -d '{\"message\": \"Привіт\"}')"
     ]
   }
 }
