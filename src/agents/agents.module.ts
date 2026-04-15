@@ -1,15 +1,8 @@
 import { Module } from '@nestjs/common';
-import { OrchestratorService } from './orchestrator/orchestrator.service';
-import { ResearcherService } from './researcher/researcher.service';
-import { AnalystService } from './analyst/analyst.service';
-import { WriterService } from './writer/writer.service';
+import { GreetingAgent } from './greeting.agent';
 
 @Module({
-  providers: [
-    OrchestratorService,
-    ResearcherService,
-    AnalystService,
-    WriterService,
-  ],
+  providers: [GreetingAgent],
+  exports: [GreetingAgent],
 })
 export class AgentsModule {}
