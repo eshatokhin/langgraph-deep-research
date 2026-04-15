@@ -3,9 +3,9 @@ import { GraphService } from '../graph/graph.service';
 
 @Injectable()
 export class SupportService {
-  constructor(private readonly graphServise: GraphService) {}
+  constructor(private readonly graphService: GraphService) {}
 
   async handleMessage(userMessage: string) {
-    return this.graphServise.invoke(userMessage);
+    return this.graphService.invoke(userMessage);
   }
 }
