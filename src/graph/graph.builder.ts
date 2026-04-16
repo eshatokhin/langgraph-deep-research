@@ -6,6 +6,7 @@ import { SupportState, SupportStateType } from './graph.state';
 import { GreetingAgent } from '../agents/greeting.agent';
 import { VerifyAgent } from '../agents/verify.agent';
 import { IntakeAgent } from '../agents/intake.agent';
+import { ResolveAgent } from '../agents/resolve.agent';
 import { checkCustomerTool } from '../tools/customer.tool';
 
 @Injectable()
@@ -14,6 +15,7 @@ export class GraphBuilder {
     private readonly greetingAgent: GreetingAgent,
     private readonly verifyAgent: VerifyAgent,
     private readonly intakeAgent: IntakeAgent,
+    private readonly resolveAgent: ResolveAgent,
   ) {}
 
   build() {
@@ -23,12 +25,14 @@ export class GraphBuilder {
       .addNode('tools', new ToolNode([checkCustomerTool]))
       .addNode('no_support', () => this.noSupportNode())
       .addNode('intake', (state) => this.intakeAgent.run(state))
+      .addNode('resolve', (state) => this.resolveAgent.run(state))
       .addConditionalEdges(START, (state) => this.router(state))
       .addEdge('greeting', END)
       .addConditionalEdges('verify', toolsCondition)
       .addEdge('tools', 'verify')
       .addEdge('no_support', END)
-      .addEdge('intake', END);
+      .addConditionalEdges('intake', (state) => this.intakeRouter(state))
+      .addEdge('resolve', END);
 
     return graph.compile({ checkpointer: new MemorySaver() });
   }
@@ -57,7 +61,14 @@ export class GraphBuilder {
 
     if (!state.edrpou) return 'verify';
     if (state.hasActiveSupport === false) return 'no_support';
-    if (state.hasActiveSupport === true) return 'intake';
+    if (state.hasActiveSupport === true && !state.issueDescription)
+      return 'intake';
+    if (state.issueDescription) return 'resolve';
+    return END;
+  }
+
+  private intakeRouter(state: SupportStateType): string {
+    if (state.issueDescription) return 'resolve';
     return END;
   }
 }

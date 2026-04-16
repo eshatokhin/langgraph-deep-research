@@ -25,7 +25,17 @@
       "Bash(curl -s -X POST http://172.18.176.1:3000/support/message -H 'Content-Type: application/json' -d '{\"message\": \"Привіт\", \"threadId\": \"test-auto-1\"}')",
       "Bash(curl -s -X POST http://172.18.176.1:3000/support/message -H 'Content-Type: application/json' -d '{\"message\": \"Мій ЄДРПОУ 12345678\", \"threadId\": \"test-auto-1\"}')",
       "Bash(curl -s -X POST http://172.18.176.1:3000/support/message -H 'Content-Type: application/json' -d '{\"message\": \"Моя компанія 87654321\", \"threadId\": \"test-auto-2\"}')",
-      "Bash(curl -s -X POST http://172.18.176.1:3000/support/message -H 'Content-Type: application/json' -d '{\"message\": \"Привіт\"}')"
+      "Bash(curl -s -X POST http://172.18.176.1:3000/support/message -H 'Content-Type: application/json' -d '{\"message\": \"Привіт\"}')",
+      "mcp__docs-langchain__query_docs_filesystem_docs_by_lang_chain",
+      "Bash(npm ls *)",
+      "Bash(psql -U postgres -d support_bot -c \"SELECT COUNT\\(*\\) FROM knowledge_base;\")",
+      "Bash(\"/mnt/c/Program Files/PostgreSQL/18/bin/psql.exe\" -U postgres -d support_bot -c \"SELECT COUNT\\(*\\) FROM knowledge_base;\")",
+      "Bash(/mnt/c/Program Files/PostgreSQL/18/bin/psql.exe *)",
+      "Bash(\"/mnt/c/Program Files/PostgreSQL/18/bin/psql.exe\" -U postgres -d support_bot -t -c \"SELECT LEFT\\(content, 200\\) FROM knowledge_base LIMIT 5;\")",
+      "Bash(echo \"EXIT: $?\")",
+      "Bash(PGPASSWORD=2617655 /mnt/c/Program Files/PostgreSQL/18/bin/psql.exe *)",
+      "Bash(node *)",
+      "Bash(npx ts-node *)"
     ]
   }
 }
