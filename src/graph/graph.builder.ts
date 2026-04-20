@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
-import { StateGraph, START, END, MemorySaver } from '@langchain/langgraph';
+import { StateGraph, START, END } from '@langchain/langgraph';
 import { ToolNode, toolsCondition } from '@langchain/langgraph/prebuilt';
+import { PostgresSaver } from '@langchain/langgraph-checkpoint-postgres';
 import { AIMessage } from '@langchain/core/messages';
 import { SupportState, SupportStateType } from './graph.state';
 import { GreetingAgent } from '../agents/greeting.agent';
@@ -18,7 +19,10 @@ export class GraphBuilder {
     private readonly resolveAgent: ResolveAgent,
   ) {}
 
-  build() {
+  async build(connString: string) {
+    const checkpointer = PostgresSaver.fromConnString(connString);
+    await checkpointer.setup();
+
     const graph = new StateGraph(SupportState)
       .addNode('greeting', () => this.greetingAgent.run())
       .addNode('verify', (state) => this.verifyAgent.run(state))
@@ -36,7 +40,7 @@ export class GraphBuilder {
       .addConditionalEdges('resolve', (state) => this.resolveRouter(state))
       .addEdge('escalate', END);
 
-    return graph.compile({ checkpointer: new MemorySaver() });
+    return graph.compile({ checkpointer });
   }
 
   private noSupportNode(): { messages: AIMessage[] } {
