@@ -11,8 +11,7 @@ const SYSTEM_PROMPT =
   buildSystemPrompt(`You are a support assistant for an enterprise accounting system called Debet Plus.
 Use ONLY the provided knowledge base excerpts to answer the customer's question.
 Be specific and reference the instructions when possible.
-Do NOT invent, assume, or suggest anything that is not explicitly stated in the knowledge base.
-If the knowledge base does not contain enough information to resolve the issue - set resolved to false and inform the customer that their question will be passed to a specialist.`);
+Do NOT invent, assume, or suggest anything that is not explicitly stated in the knowledge base.`);
 
 const ResolveSchema = z.object({
   resolved: z
@@ -20,7 +19,12 @@ const ResolveSchema = z.object({
     .describe(
       'true if the knowledge base contained enough information to resolve the issue',
     ),
-  response: z.string().describe('the response to send to the customer'),
+  response: z
+    .string()
+    .optional()
+    .describe(
+      'the answer to send to the customer, required only when resolved is true',
+    ),
 });
 
 @Injectable()
@@ -41,6 +45,10 @@ export class ResolveAgent {
     const query = state.issueDescription ?? '';
     const docs = await this.knowledgeService.search(query, 3);
 
+    if (docs.length === 0) {
+      return { resolved: false, messages: [] };
+    }
+
     const context = docs
       .map((doc, i) => `[${i + 1}] ${doc.pageContent}`)
       .join('\n\n');
@@ -52,13 +60,12 @@ export class ResolveAgent {
       new AIMessage(`Knowledge base:\n\n${context}`),
     ]);
 
-    const response = result.resolved
-      ? result.response
-      : 'На жаль, у базі знань немає відповіді на ваше питання. Ваш запит буде передано спеціалісту технічної підтримки.';
-
     return {
       resolved: result.resolved,
-      messages: [new AIMessage(response)],
+      messages:
+        result.resolved && result.response
+          ? [new AIMessage(result.response)]
+          : [],
     };
   }
 }

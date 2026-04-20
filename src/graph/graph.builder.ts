@@ -26,13 +26,15 @@ export class GraphBuilder {
       .addNode('no_support', () => this.noSupportNode())
       .addNode('intake', (state) => this.intakeAgent.run(state))
       .addNode('resolve', (state) => this.resolveAgent.run(state))
+      .addNode('escalate', () => this.escalateNode())
       .addConditionalEdges(START, (state) => this.router(state))
       .addEdge('greeting', END)
       .addConditionalEdges('verify', toolsCondition)
       .addEdge('tools', 'verify')
       .addEdge('no_support', END)
       .addConditionalEdges('intake', (state) => this.intakeRouter(state))
-      .addEdge('resolve', END);
+      .addConditionalEdges('resolve', (state) => this.resolveRouter(state))
+      .addEdge('escalate', END);
 
     return graph.compile({ checkpointer: new MemorySaver() });
   }
@@ -70,5 +72,21 @@ export class GraphBuilder {
   private intakeRouter(state: SupportStateType): string {
     if (state.issueDescription) return 'resolve';
     return END;
+  }
+
+  private resolveRouter(state: SupportStateType): string {
+    if (state.resolved) return END;
+    return 'escalate';
+  }
+
+  private escalateNode(): { messages: AIMessage[] } {
+    return {
+      messages: [
+        new AIMessage(
+          'На жаль, у базі знань немає відповіді на ваше питання. ' +
+            'Ваш запит буде передано спеціалісту технічної підтримки.',
+        ),
+      ],
+    };
   }
 }
