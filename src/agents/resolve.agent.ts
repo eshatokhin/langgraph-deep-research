@@ -53,19 +53,23 @@ export class ResolveAgent {
       .map((doc, i) => `[${i + 1}] ${doc.pageContent}`)
       .join('\n\n');
 
-    const structured = this.model.withStructuredOutput(ResolveSchema);
-    const result = await structured.invoke([
-      new SystemMessage(SYSTEM_PROMPT),
-      ...state.messages,
-      new AIMessage(`Knowledge base:\n\n${context}`),
-    ]);
+    try {
+      const structured = this.model.withStructuredOutput(ResolveSchema);
+      const result = await structured.invoke([
+        new SystemMessage(SYSTEM_PROMPT),
+        ...state.messages,
+        new AIMessage(`Knowledge base:\n\n${context}`),
+      ]);
 
-    return {
-      resolved: result.resolved,
-      messages:
-        result.resolved && result.response
-          ? [new AIMessage(result.response)]
-          : [],
-    };
+      return {
+        resolved: result.resolved,
+        messages:
+          result.resolved && result.response
+            ? [new AIMessage(result.response)]
+            : [],
+      };
+    } catch {
+      return { resolved: false, messages: [] };
+    }
   }
 }

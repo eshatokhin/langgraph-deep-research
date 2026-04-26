@@ -41,7 +41,18 @@
       "Bash(curl -s -X POST http://172.18.176.1:3000/support/message -H 'Content-Type: application/json' -d '{\"message\": \"Як налаштувати імпорт платіжок з K-Files?\", \"threadId\": \"test-day6-1\"}')",
       "Bash(curl -s -X POST http://172.18.176.1:3000/support/message -H 'Content-Type: application/json' -d '{\"message\": \"Привіт\", \"threadId\": \"test-day6-2\"}')",
       "Bash(curl -s -X POST http://172.18.176.1:3000/support/message -H 'Content-Type: application/json' -d '{\"message\": \"12345678\", \"threadId\": \"test-day6-2\"}')",
-      "Bash(curl -s -X POST http://172.18.176.1:3000/support/message -H 'Content-Type: application/json' -d '{\"message\": \"Як занести прибуткову накладну по ТМЦ?\", \"threadId\": \"test-day6-2\"}')"
+      "Bash(curl -s -X POST http://172.18.176.1:3000/support/message -H 'Content-Type: application/json' -d '{\"message\": \"Як занести прибуткову накладну по ТМЦ?\", \"threadId\": \"test-day6-2\"}')",
+      "Bash(curl -s -X POST http://172.18.176.1:3000/support/message -H 'Content-Type: application/json' -d '{\"message\": \"Привіт\", \"threadId\": \"test-scores-1\"}')",
+      "Bash(curl -s -X POST http://172.18.176.1:3000/support/message -H 'Content-Type: application/json' -d '{\"message\": \"12345678\", \"threadId\": \"test-scores-1\"}')",
+      "Bash(curl -s -X POST http://172.18.176.1:3000/support/message -H 'Content-Type: application/json' -d '{\"message\": \"Як налаштувати імпорт з K-Files?\", \"threadId\": \"test-scores-1\"}')",
+      "Bash(curl -s -X POST http://172.18.176.1:3000/support/message -H 'Content-Type: application/json' -d '{\"message\": \"Привіт\", \"threadId\": \"test-scores-2\"}')",
+      "Bash(curl -s -X POST http://172.18.176.1:3000/support/message -H 'Content-Type: application/json' -d '{\"message\": \"12345678\", \"threadId\": \"test-scores-2\"}')",
+      "Bash(curl -s -X POST http://172.18.176.1:3000/support/message -H 'Content-Type: application/json' -d '{\"message\": \"Як налаштувати імпорт з K-Files?\", \"threadId\": \"test-scores-3\"}')",
+      "Bash(curl -s -X POST http://172.18.176.1:3000/support/message -H 'Content-Type: application/json' -d '{\"message\": \"12345678\", \"threadId\": \"test-scores-3\"}')",
+      "Bash(curl -s -X POST http://172.18.176.1:3000/support/message -H 'Content-Type: application/json' -d '{\"message\": \"12345678\", \"threadId\": \"test-scores-4\"}')",
+      "Bash(curl -s -X POST http://172.18.176.1:3000/support/message -H 'Content-Type: application/json' -d '{\"message\": \"K-Files import setup\", \"threadId\": \"test-scores-4\"}')",
+      "Bash(curl -s -X POST http://172.18.176.1:3000/support/message -H 'Content-Type: application/json' -d '{\"message\": \"12345678\", \"threadId\": \"test-scores-5\"}')",
+      "Bash(curl -s -X POST http://172.18.176.1:3000/support/message -H 'Content-Type: application/json' -d '{\"message\": \"consolidated reporting\", \"threadId\": \"test-scores-5\"}')"
     ]
   }
 }

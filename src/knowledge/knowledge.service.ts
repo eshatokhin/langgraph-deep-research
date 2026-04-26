@@ -5,7 +5,7 @@ import { CohereEmbeddings } from '@langchain/cohere';
 import { Document } from '@langchain/core/documents';
 import { Pool } from 'pg';
 
-const SIMILARITY_THRESHOLD = 0.5; // cosine distance: 0 = identical, 2 = opposite
+const SIMILARITY_THRESHOLD = 0.45; // cosine distance: 0 = identical, 2 = opposite
 
 @Injectable()
 export class KnowledgeService implements OnModuleInit, OnModuleDestroy {
@@ -46,7 +46,7 @@ export class KnowledgeService implements OnModuleInit, OnModuleDestroy {
 
   async search(query: string, k = 3): Promise<Document[]> {
     const results = await this.vectorStore.similaritySearchWithScore(query, k);
-    return results
+return results
       .filter(([, score]) => score <= SIMILARITY_THRESHOLD)
       .map(([doc]) => doc);
   }

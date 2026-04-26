@@ -7,5 +7,6 @@ import { GraphModule } from '../graph/graph.module';
   imports: [GraphModule],
   controllers: [SupportController],
   providers: [SupportService],
+  exports: [SupportService],
 })
 export class SupportModule {}

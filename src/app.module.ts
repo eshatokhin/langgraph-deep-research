@@ -6,6 +6,7 @@ import { SupportModule } from './support/support.module';
 import { AgentsModule } from './agents/agents.module';
 import { GraphModule } from './graph/graph.module';
 import { KnowledgeModule } from './knowledge/knowledge.module';
+import { TelegramModule } from './telegram/telegram.module';
 
 @Module({
   imports: [
@@ -14,6 +15,7 @@ import { KnowledgeModule } from './knowledge/knowledge.module';
     AgentsModule,
     GraphModule,
     KnowledgeModule,
+    TelegramModule,
   ],
   controllers: [AppController],
   providers: [AppService],
